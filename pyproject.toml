@@ -1,40 +1,24 @@
-[build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "google-analytics-mcp"
-version = "2.0.1"
-description = "Google Analytics 4 MCP server for AI agents and agentic workflows. Gives agents analysis-ready GA4 access with schema discovery, server-side aggregation, and smart defaults."
-readme = "README.md"
-license = "Apache-2.0"
-authors = [
-    {name = "Surendran B", email = "reachsuren@gmail.com"}
-]
-requires-python = ">=3.10"
+name = "mcp-marketing-ga4"
+version = "0.1.0"
+description = "Agent24 Marketing MCP — Google Analytics 4"
+requires-python = ">=3.11"
 dependencies = [
-    "mcp>=1.2.0",
-    "google-analytics-data==0.19.0",
-    "google-auth==2.40.0"
+    "mcp[cli]>=1.2.9",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "google-analytics-data>=0.19.0",
+    "google-auth>=2.40.0",
+    "redis[hiredis]>=5.0.0",
+    "httpx>=0.27.0",
 ]
-keywords = ["google-analytics", "mcp", "mcp-server", "ai-agent", "analytics", "ga4", "agentic-workflows", "llm"]
-classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-]
-
-[project.urls]
-Homepage = "https://github.com/surendranb/google-analytics-mcp"
-Repository = "https://github.com/surendranb/google-analytics-mcp"
-Issues = "https://github.com/surendranb/google-analytics-mcp/issues"
 
 [project.scripts]
-ga4-mcp-server = "ga4_mcp.server:main"
+mcp-marketing-ga4 = "ga4_mcp.server:main"
 
-[tool.setuptools]
-packages = ["ga4_mcp", "ga4_mcp.tools"]
+[tool.hatch.build.targets.wheel]
+packages = ["ga4_mcp"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

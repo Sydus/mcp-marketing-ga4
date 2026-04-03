@@ -18,6 +18,7 @@ import os
 import sys
 import json
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
+from ga4_mcp.identity import get_creds
 from google.analytics.data_v1beta.types import (
     DateRange, Dimension, Metric, RunReportRequest, Filter, FilterExpression, FilterExpressionList,
     OrderBy, MetricAggregation
@@ -122,8 +123,20 @@ def get_ga4_data(
                 return {"error": f"Invalid dimension_filter structure: {e}"}
 
         # --- API Client and Request Objects ---
-        client = BetaAnalyticsDataClient()
-        property_id = os.getenv("GA4_PROPERTY_ID")
+        creds = get_creds()
+        property_id = creds.get("ga4", {}).get("property_id") or os.getenv("GA4_PROPERTY_ID", "")
+        sa_json = creds.get("ga4", {}).get("service_account_json")
+        if sa_json:
+            from google.oauth2 import service_account
+            import json as _json_mod
+            sa_info = _json_mod.loads(sa_json) if isinstance(sa_json, str) else sa_json
+            ga_credentials = service_account.Credentials.from_service_account_info(
+                sa_info,
+                scopes=["https://www.googleapis.com/auth/analytics.readonly"]
+            )
+            client = BetaAnalyticsDataClient(credentials=ga_credentials)
+        else:
+            client = BetaAnalyticsDataClient()  # fallback ADC
         dimension_objects = [Dimension(name=d) for d in parsed_dimensions]
         metric_objects = [Metric(name=m) for m in parsed_metrics]
         date_range_object = DateRange(start_date=date_range_start, end_date=date_range_end)
