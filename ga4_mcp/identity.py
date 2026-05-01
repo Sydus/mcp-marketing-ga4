@@ -5,7 +5,7 @@ import logging, os
 import httpx
 
 logger = logging.getLogger(__name__)
-_IDENTITY_URL = os.environ.get("IDENTITY_URL", "http://seas-identity-api.service.consul:15104")
+_IDENTITY_URL = os.environ.get("IDENTITY_URL", "http://sydus-identity-api.service.consul:15104")
 _IDENTITY_INTERNAL_KEY = os.environ.get("IDENTITY_INTERNAL_KEY", "")
 _request_creds: ContextVar[dict] = ContextVar("request_creds", default={})
 
