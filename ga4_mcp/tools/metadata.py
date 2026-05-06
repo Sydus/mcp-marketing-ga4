@@ -15,6 +15,7 @@
 """Tools for fetching and exploring GA4 property metadata."""
 
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
+from mcp_common import tool
 from ga4_mcp.coordinator import mcp
 
 # This global variable will be populated by the server on startup.
@@ -48,7 +49,7 @@ def get_property_schema_uncached(property_id: str) -> dict:
         }
     return schema
 
-@mcp.tool()
+@tool(mcp, mcp_name="mcp-marketing-ga4")
 def search_schema(keyword: str):
     """
     Searches for a keyword across all available dimensions and metrics for the property.
@@ -94,7 +95,7 @@ def search_schema(keyword: str):
     return {"top_results": dict(sorted_results[:10])}
 
 
-@mcp.tool()
+@tool(mcp, mcp_name="mcp-marketing-ga4")
 def get_property_schema():
     """
     Returns the complete schema for the configured GA4 property, including all
@@ -105,7 +106,7 @@ def get_property_schema():
         return {"error": "Schema not loaded. Please check server startup logs."}
     return PROPERTY_SCHEMA
 
-@mcp.tool()
+@tool(mcp, mcp_name="mcp-marketing-ga4")
 def list_dimension_categories():
     """
     List all available GA4 dimension categories based on the property's schema.
@@ -123,7 +124,7 @@ def list_dimension_categories():
         
     return {"dimension_categories": categories}
 
-@mcp.tool()
+@tool(mcp, mcp_name="mcp-marketing-ga4")
 def list_metric_categories():
     """
     List all available GA4 metric categories based on the property's schema.
@@ -141,7 +142,7 @@ def list_metric_categories():
 
     return {"metric_categories": categories}
 
-@mcp.tool()
+@tool(mcp, mcp_name="mcp-marketing-ga4")
 def get_dimensions_by_category(category: str):
     """
     Get all dimensions in a specific category with their descriptions.
@@ -162,7 +163,7 @@ def get_dimensions_by_category(category: str):
         
     return dimensions_in_category
 
-@mcp.tool()
+@tool(mcp, mcp_name="mcp-marketing-ga4")
 def get_metrics_by_category(category: str):
     """
     Get all metrics in a specific category with their descriptions.

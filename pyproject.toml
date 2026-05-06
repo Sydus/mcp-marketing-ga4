@@ -4,13 +4,9 @@ version = "0.1.0"
 description = "Agent24 Marketing MCP — Google Analytics 4"
 requires-python = ">=3.11"
 dependencies = [
-    "mcp[cli]>=1.2.9",
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.30.0",
     "google-analytics-data>=0.19.0",
     "google-auth>=2.40.0",
-    "redis[hiredis]>=5.0.0",
-    "httpx>=0.27.0",
+    "mcp-common @ git+ssh://git@github.com/Sydus/mcp-common.git@v0.7.1",
 ]
 
 [project.scripts]
@@ -18,6 +14,9 @@ mcp-marketing-ga4 = "ga4_mcp.server:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["ga4_mcp"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [build-system]
 requires = ["hatchling"]

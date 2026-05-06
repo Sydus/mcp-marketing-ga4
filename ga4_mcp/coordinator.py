@@ -1,13 +1,14 @@
-"""
-This module declares the singleton MCP instance.
+"""Singleton MCP/app per evitare import ciclici tra server e tools."""
+from mcp_common import create_mcp_app
 
-This allows other modules (server, tools) to import the same mcp object
-without creating circular dependencies.
-"""
-from mcp.server.fastmcp import FastMCP
-from mcp.server.transport_security import TransportSecuritySettings
-
-mcp = FastMCP(
-    "Google Analytics 4",
-    transport_security=TransportSecuritySettings(allowed_hosts=["mcp.agent24.it"]),
+mcp, app, main = create_mcp_app(
+    name="Google Analytics 4",
+    instructions=(
+        "Espone Google Analytics 4 in lettura: liste di metric/dimension "
+        "disponibili per la property, query di reporting (analytics.runReport) "
+        "con filtri, ordini, breakdown temporali. Tutti i tool richiedono "
+        "identity: il property_id e le credenziali del service account "
+        "vengono risolti dall'api-key del cliente."
+    ),
+    port=8128,
 )

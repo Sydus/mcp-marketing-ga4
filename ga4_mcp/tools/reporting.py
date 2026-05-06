@@ -18,7 +18,7 @@ import os
 import sys
 import json
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
-from ga4_mcp.identity import get_creds
+from mcp_common import get_creds, tool
 from google.analytics.data_v1beta.types import (
     DateRange, Dimension, Metric, RunReportRequest, Filter, FilterExpression, FilterExpressionList,
     OrderBy, MetricAggregation
@@ -41,7 +41,7 @@ def _should_aggregate(dimensions, metrics):
     """Detect when server-side aggregation would be beneficial."""
     return len(dimensions) == 0 or "date" not in dimensions
 
-@mcp.tool()
+@tool(mcp, mcp_name="mcp-marketing-ga4")
 def get_ga4_data(
     dimensions: list[str] = ["date"],
     metrics: list[str] = ["totalUsers", "newUsers", "sessions"],
